@@ -25,7 +25,7 @@
         "bin-dir": "bin"
     },
     "require": {
-        "doctrine/orm": "^2.5"
+        "doctrine/orm": "^2.5",
         "sensorario/wheel-engine": "^1.0"
     }
 }
