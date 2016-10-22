@@ -64,7 +64,7 @@ class Application
         }
 
         /** @todo expose isErrorResponse */
-        if ('Magna\Responses\ResponseError' == get_class($response)) { 
+        if ('Sensorario\WheelFramework\Responses\ResponseError' == get_class($response)) { 
             header('HTTP/1.0 404 Not Found');
             header('Content-type: application/json');
         }
