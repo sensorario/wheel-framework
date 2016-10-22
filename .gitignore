@@ -1,0 +1,4 @@
+vendor
+bin/*
+var/logs/*
+app/config.db.php
