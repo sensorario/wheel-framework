@@ -2,15 +2,12 @@
 
 namespace Sensorario\WheelFramework\Components;
 
-use Sensorario\WheelEngine\Engine;
 use Sensorario\WheelFramework\Components\ResponseFactory;
 use Sensorario\Container\Container;
 
 class Application
 {
     private $config;
-
-    private $engine;
 
     private $factory;
 
@@ -25,7 +22,6 @@ class Application
 
         $this->container->setConfiguration($this->config->getConfig('services'));
 
-        $this->engine = $this->container->get('engine');
         $this->factory = $this->container->get('factory');
         $this->manager = $this->container->get('manager');
         $this->router = $this->container->get('router');
@@ -50,7 +46,6 @@ class Application
             $this->factory->init(
                 $this->config,
                 $this->router,
-                $this->engine,
                 $this->manager,
                 $route
             );
