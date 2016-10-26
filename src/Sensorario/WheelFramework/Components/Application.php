@@ -38,25 +38,28 @@ class Application
     {
         $routes = $this->config->getConfig('routes');
 
-        $route = !isset($routes[$this->router->getUri()])
-            ? $this->config->getConfig('default_route')
-            : $routes[$this->router->getUri()];
-
-        $this->factory->init(
-            $this->config,
-            $this->router,
-            $this->engine,
-            $this->manager,
-            $route
-        );
-        $this->factory->initController();
-
         try {
+            if (!isset($routes[$this->router->getUri()])) {
+                throw new \RuntimeException(
+                    'Invalid Request'
+                );
+            }
+
+            $route = $routes[$this->router->getUri()];
+
+            $this->factory->init(
+                $this->config,
+                $this->router,
+                $this->engine,
+                $this->manager,
+                $route
+            );
+            $this->factory->initController();
             $response = $this->factory->callAction();
         } catch (\Exception $exception) {
-            return json_encode([
+            return json_encode(array(
                 'message'=>$exception->getMessage(),
-            ]);
+            ));
         }
 
         /** @todo expose isErrorResponse */

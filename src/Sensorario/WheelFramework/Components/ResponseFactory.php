@@ -40,6 +40,12 @@ class ResponseFactory
 
     public function initController()
     {
+        if (!class_exists($this->route['controller'])) {
+            throw new \RuntimeException(
+                'Oops!'
+            );
+        }
+
         $this->controller = (new $this->route['controller'](
             $this->config,
             $this->router,
@@ -82,11 +88,19 @@ class ResponseFactory
         }
     }
 
-    private function ensureRequestIsWellFormed($resourceClassName)
+    private function ensureRequestIsWellFormed($resourceName)
     {
-        $resourceClassName::box(json_decode(
-            file_get_contents('php://input'),
-            true
-        ));
+        \Sensorario\Resources\Resource::box(
+            $request = json_decode(
+                file_get_contents('php://input'),
+                true
+            ),
+            new \Sensorario\Resources\Configurator(
+                $resourceName,
+                new \Sensorario\Resources\Container(array(
+                    'resources' => $this->config->getConfig('resources')
+                ))
+            )
+        );
     }
 }
