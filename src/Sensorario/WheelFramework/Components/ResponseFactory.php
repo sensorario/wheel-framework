@@ -2,7 +2,6 @@
 
 namespace Sensorario\WheelFramework\Components;
 
-use Sensorario\WheelEngine\Engine;
 use Sensorario\WheelFramework\Responses\ResponseError;
 use Sensorario\WheelFramework\Responses\ResponseSuccess;
 use Sensorario\WheelFramework\Components\Router;
@@ -14,8 +13,6 @@ class ResponseFactory
 
     private $router;
 
-    private $engine;
-
     private $manager;
 
     private $controller;
@@ -23,19 +20,13 @@ class ResponseFactory
     public function init(
         Config $config,
         Router $router,
-        Engine $engine,
         Manager $manager,
         array $route
     ) {
         $this->config = $config;
         $this->router = $router;
-        $this->engine = $engine;
         $this->manager = $manager;
         $this->route = $route;
-
-        $this->engine->setWheelFolder(
-            $this->config->getConfig('engine')['wheel_path']
-        );
     }
 
     public function initController()
@@ -49,7 +40,6 @@ class ResponseFactory
         $this->controller = (new $this->route['controller'](
             $this->config,
             $this->router,
-            $this->engine,
             $this->manager
         ));
     }
