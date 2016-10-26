@@ -20,6 +20,8 @@ class ResponseSuccess
 
     public function getOutput()
     {
-        return $this->content;
+        return json_encode(
+            $this->content
+        );
     }
 }
