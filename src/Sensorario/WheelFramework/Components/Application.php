@@ -23,11 +23,7 @@ class Application
         $this->container->setConfiguration($this->config->getConfig('services'));
 
         $this->factory = $this->container->get('factory');
-        $this->manager = $this->container->get('manager');
         $this->router = $this->container->get('router');
-
-        $this->manager->setConfiguration($this->config);
-        $this->manager->init();
     }
 
     public function run()
@@ -45,8 +41,7 @@ class Application
 
             $this->factory->init(
                 $this->config,
-                $this->router,
-                $this->manager,
+                $this->container,
                 $route
             );
             $this->factory->initController();
