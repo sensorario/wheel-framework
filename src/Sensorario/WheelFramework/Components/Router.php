@@ -16,9 +16,9 @@ class Router
         $this->posts = $_POST;
         $this->vars = [];
 
-        $_GET = null;
-        $_POST = null;
-        $_SERVER = null;
+        // $_GET = null;
+        // $_POST = null;
+        // $_SERVER = null;
     }
 
     public function getUri() 

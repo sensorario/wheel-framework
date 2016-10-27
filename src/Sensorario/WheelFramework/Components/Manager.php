@@ -37,6 +37,12 @@ class Manager
 
     public function getRepository($repository)
     {
+        if (!$this->entityManager) {
+            throw new \RuntimeException(
+                'Entity Manager is not defined!'
+            );
+        }
+
         return $this->entityManager->getRepository($repository);
     }
 

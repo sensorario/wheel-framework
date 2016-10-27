@@ -45,8 +45,7 @@ class Application
 
             $this->factory->init(
                 $this->config,
-                $this->router,
-                $this->manager,
+                $this->container,
                 $route
             );
             $this->factory->initController();

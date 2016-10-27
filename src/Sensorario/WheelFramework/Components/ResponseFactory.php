@@ -2,10 +2,11 @@
 
 namespace Sensorario\WheelFramework\Components;
 
+use Sensorario\Container\Container;
+use Sensorario\WheelFramework\Components\Manager;
+use Sensorario\WheelFramework\Components\Router;
 use Sensorario\WheelFramework\Responses\ResponseError;
 use Sensorario\WheelFramework\Responses\ResponseSuccess;
-use Sensorario\WheelFramework\Components\Router;
-use Sensorario\WheelFramework\Components\Manager;
 
 class ResponseFactory
 {
@@ -17,16 +18,16 @@ class ResponseFactory
 
     private $controller;
 
+    private $container;
+
     public function init(
         Config $config,
-        Router $router,
-        Manager $manager,
+        Container $container,
         array $route
     ) {
-        $this->config = $config;
-        $this->router = $router;
-        $this->manager = $manager;
+        $this->container = $container;
         $this->route = $route;
+        $this->config = $config;
     }
 
     public function initController()
@@ -39,18 +40,19 @@ class ResponseFactory
 
         $this->controller = (new $this->route['controller'](
             $this->config,
-            $this->router,
-            $this->manager
+            $this->container
         ));
     }
 
     public function callAction()
     {
+        $router = $this->container->get('router');
+
         try {
             $this->ensureMethodIsAllowed();
-            $action = $this->route[$this->router->getRequestMethod()];
+            $action = $this->route[$router->getRequestMethod()];
 
-            if (in_array($this->router->getRequestMethod(), ['POST'])) {
+            if (in_array($router->getRequestMethod(), ['POST'])) {
                 $resource = $action['resource'];
                 $this->ensureRequestIsWellFormed($resource);
             }
@@ -69,7 +71,8 @@ class ResponseFactory
 
     private function ensureMethodIsAllowed()
     {
-        $httpVerb = $this->router->getRequestMethod();
+        $router = $this->container->get('router');
+        $httpVerb = $router->getRequestMethod();
         $routeIsNotAllowed = !isset($this->route[$httpVerb]);
         if ($routeIsNotAllowed) {
             throw new \RuntimeException(
