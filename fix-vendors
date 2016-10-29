@@ -1,13 +1,13 @@
 #!/bin/bash
 
-git checkout -b fix-vendors master
+git checkout -b fix-vendors 1.1
 
 composer update --no-dev
 
 git add .
 git commit -m 'update vendors'
 
-git checkout master
+git checkout 1.1
 
 git merge --no-ff fix-vendors
 git branch -D fix-vendors
