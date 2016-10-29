@@ -1,13 +1,26 @@
 #!/bin/bash
 
-git checkout -b fix-vendors master
+# get current branch name
+branch_name=$(git symbolic-ref -q HEAD)
+branch_name=${branch_name##refs/heads/}
+branch_name=${branch_name:-HEAD}
 
-composer update --no-dev
+# create fix branch from current position
+git checkout -b fix-vendors-from-$branch_name $branch_name
 
+# remove all vendors
+rm -rf vendor
+
+# update everithing
+composer update
+
+# add everything
 git add .
 git commit -m 'update vendors'
 
-git checkout master
+# come back to original branch
+git checkout $branch_name
 
-git merge --no-ff fix-vendors
-git branch -D fix-vendors
+# merge fix-branch to original branch
+git merge --no-ff fix-vendors-from-$branch_name
+git branch -D fix-vendors-from-$branch_name
