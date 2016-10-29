@@ -8,11 +8,8 @@ branch_name=${branch_name:-HEAD}
 # create fix branch from current position
 git checkout -b fix-vendors-from-$branch_name $branch_name
 
-# remove all vendors
-rm -rf vendor
-
 # update everithing
-composer update
+composer update --no-dev
 
 # add everything
 git add .
