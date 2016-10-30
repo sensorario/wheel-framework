@@ -2,8 +2,6 @@
 
 namespace Sensorario\WheelFramework\Responses;
 
-use Sensorario\Resources\Helpers\Resource;
-
 class ResponseSuccess
 {
     private $content;

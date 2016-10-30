@@ -17,49 +17,36 @@ class Application
         Config $config,
         Container $container
     ) {
-        $this->config = $config;
+        $services = $config->getConfig('services');
+
         $this->container = $container;
+        $this->container->setConfiguration($services);
 
-        $this->container->setConfiguration($this->config->getConfig('services'));
+        $this->config = $config;
+    }
 
-        $this->factory = $this->container->get('factory');
-        $this->router = $this->container->get('router');
+    public function getContainer()
+    {
+        return $this->container;
     }
 
     public function run()
     {
+        $this->factory = $this->container->get('factory');
+        $this->router  = $this->container->get('router');
+
+        $uri    = $this->router->getUri();
         $routes = $this->config->getConfig('routes');
+        $route  = $routes[$uri];
 
-        try {
-            if (!isset($routes[$this->router->getUri()])) {
-                throw new \RuntimeException(
-                    'Invalid Request'
-                );
-            }
+        $this->factory->init(
+            $this->config,
+            $this->container,
+            $route
+        );
 
-            $route = $routes[$this->router->getUri()];
+        $this->factory->initController();
 
-            $this->factory->init(
-                $this->config,
-                $this->container,
-                $route
-            );
-            $this->factory->initController();
-            $response = $this->factory->callAction();
-        } catch (\Exception $exception) {
-            return json_encode(array(
-                'message'=>$exception->getMessage(),
-            ));
-        }
-
-        /** @todo expose isErrorResponse */
-        if ('Sensorario\WheelFramework\Responses\ResponseError' == get_class($response)) { 
-            header('HTTP/1.0 404 Not Found');
-            header('Content-type: application/json');
-        }
-
-
-        /** @var $response Magna\Responses\ResponseSuccess */
-        return $response->getOutput();
+        return $this->factory->callAction();
     }
 }
