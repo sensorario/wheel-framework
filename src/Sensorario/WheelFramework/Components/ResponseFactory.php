@@ -61,12 +61,17 @@ class ResponseFactory
         }
 
         $method = $action['action'];
-        return ResponseSuccess::fromContent(
+
+        $response = ResponseSuccess::fromContent(
             $this->controller->$method(),
             isset($action['render_as'])
                 ? $action['render_as']
                 : 'json'
         );
+
+        $response = $response->withLink('self', $router->getFullUrl());
+
+        return $response;
     }
 
     private function ensureMethodIsAllowed()

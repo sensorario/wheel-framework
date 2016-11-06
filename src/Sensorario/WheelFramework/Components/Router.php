@@ -59,4 +59,9 @@ class Router
     {
         return $this->posts;
     }
+
+    public function getFullUrl()
+    {
+        return "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    }
 }

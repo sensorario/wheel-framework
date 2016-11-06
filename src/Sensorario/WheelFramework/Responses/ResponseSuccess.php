@@ -4,22 +4,38 @@ namespace Sensorario\WheelFramework\Responses;
 
 class ResponseSuccess
 {
-    private $content;
+    private $params;
 
-    private function __construct($content)
+    private function __construct($params)
     {
-        $this->content = $content;
+        $this->params = $params;
     }
 
-    public static function fromContent($content)
+    public static function fromContent($data)
     {
-        return new self($content);
+        return new self([
+            'data' => $data,
+        ]);
+    }
+
+    public function withLink($name, $url)
+    {
+        return new self([
+            'data' => $this->params['data'],
+            '_links' => [
+                $name => $url,
+            ]
+        ]);
     }
 
     public function getOutput()
     {
-        return json_encode([
-            'data' => $this->content
-        ]);
+        $response['data'] = $this->params['data'];
+
+        if (isset($this->params['_links'])) {
+            $response['_links'] = $this->params['_links'];
+        }
+
+        return json_encode($response);
     }
 }
