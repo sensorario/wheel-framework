@@ -2,8 +2,9 @@
 
 namespace Sensorario\WheelFramework\Components;
 
-use Sensorario\WheelFramework\Components\ResponseFactory;
 use Sensorario\Container\Container;
+use Sensorario\WheelFramework\Components\ResponseFactory;
+use Sensorario\WheelFramework\Responses\ResponseError;
 
 class Application
 {
@@ -30,6 +31,13 @@ class Application
         return $this->container;
     }
 
+    private function ensureRouteExists($routes, $uri)
+    {
+        if (!isset($routes[$uri])) {
+            header("HTTP/1.0 404 Not Found"); die;
+        }
+    }
+
     public function run()
     {
         $this->factory = $this->container->get('factory');
@@ -37,6 +45,9 @@ class Application
 
         $uri    = $this->router->getUri();
         $routes = $this->config->getConfig('routes');
+
+        $this->ensureRouteExists($routes, $uri);
+
         $route  = $routes[$uri];
 
         $this->factory->init(
