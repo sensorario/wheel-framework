@@ -4,6 +4,7 @@
  - add auto-tag script
  - responses accept links
  - add self link in response
+ - update auto-tag-script
 
 # Version 1.1
 
