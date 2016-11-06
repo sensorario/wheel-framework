@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManager;
 
 class Manager
 {
-    private $entityManager;
+    private $doctrineEntityManager;
 
     private $config;
 
@@ -29,35 +29,40 @@ class Manager
             false
         );
 
-        $this->entityManager = EntityManager::create(
+        $this->doctrineEntityManager = EntityManager::create(
             $doctrine['db_params'],
             $config
         );
     }
 
+    public function getDoctrineEntityManager()
+    {
+        return $this->doctrineEntityManager;
+    }
+
     public function getRepository($repository)
     {
-        if (!$this->entityManager) {
+        if (!$this->doctrineEntityManager) {
             throw new \RuntimeException(
                 'Entity Manager is not defined!'
             );
         }
 
-        return $this->entityManager->getRepository($repository);
+        return $this->doctrineEntityManager->getRepository($repository);
     }
 
     public function persist($entity)
     {
-        $this->entityManager->persist($entity);
+        $this->doctrineEntityManager->persist($entity);
     }
 
     public function flush()
     {
-        $this->entityManager->flush();
+        $this->doctrineEntityManager->flush();
     }
 
     public function remove($entity)
     {
-        $this->entityManager->remove($entity);
+        $this->doctrineEntityManager->remove($entity);
     }
 }

@@ -30,6 +30,11 @@ class Router
             $uriAsArray[] = '{id}';
         }
 
+        if (5 == count($uriAsArray)) {
+            $this->vars['description'] = array_pop($uriAsArray);
+            $uriAsArray[] = '{description}';
+        }
+
         return join('/', $uriAsArray);
     }
 

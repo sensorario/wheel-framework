@@ -11,6 +11,11 @@ class ResponseSuccess implements Response
         $this->params = $params;
     }
 
+    public function isError()
+    {
+        return false;
+    }
+
     public static function fromContent($data)
     {
         return new self([
