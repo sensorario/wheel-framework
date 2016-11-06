@@ -2,7 +2,7 @@
 
 namespace Sensorario\WheelFramework\Responses;
 
-class ResponseSuccess
+class ResponseSuccess implements Response
 {
     private $params;
 
@@ -20,11 +20,11 @@ class ResponseSuccess
 
     public function withLink($name, $url)
     {
+        $this->params['_links'][$name] = $url;
+
         return new self([
             'data' => $this->params['data'],
-            '_links' => [
-                $name => $url,
-            ]
+            '_links' => $this->params['_links'],
         ]);
     }
 

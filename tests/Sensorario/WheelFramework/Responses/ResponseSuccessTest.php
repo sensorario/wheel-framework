@@ -30,4 +30,17 @@ class ResponseSuccessTest extends PHPUnit_Framework_TestCase
             $response->getOutput() 
         );
     }
+
+    public function testCanContainMoreLinks()
+    {
+        $response = ResponseSuccess::fromContent('foo');
+
+        $response = $response->withLink('foo', 'bar');
+        $response = $response->withLink('hello', 'foo');
+
+        $this->assertEquals(
+            '{"data":"foo","_links":{"foo":"bar","hello":"foo"}}',
+            $response->getOutput() 
+        );
+    }
 }

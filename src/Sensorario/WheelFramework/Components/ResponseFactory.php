@@ -5,6 +5,7 @@ namespace Sensorario\WheelFramework\Components;
 use Sensorario\Container\Container;
 use Sensorario\WheelFramework\Components\Manager;
 use Sensorario\WheelFramework\Components\Router;
+use Sensorario\WheelFramework\Responses\Response;
 use Sensorario\WheelFramework\Responses\ResponseError;
 use Sensorario\WheelFramework\Responses\ResponseSuccess;
 
@@ -61,6 +62,14 @@ class ResponseFactory
         }
 
         $method = $action['action'];
+
+        $actionResponse = $this->controller->$method();
+        if ($actionResponse instanceof Response) {
+            $response = $actionResponse->withLink('self', $router->getFullUrl());
+            return $response;
+        }
+
+        /** @deprecate this will be removed in 2.0 */
 
         $response = ResponseSuccess::fromContent(
             $this->controller->$method(),

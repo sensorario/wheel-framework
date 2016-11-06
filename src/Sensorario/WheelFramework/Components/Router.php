@@ -42,7 +42,7 @@ class Router
     {
         return isset($this->server['PHP_AUTH_USER'])
             ? $this->server['PHP_AUTH_USER']
-            : null;
+            : 'demo';
     }
 
     public function getHost() 

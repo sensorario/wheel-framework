@@ -5,6 +5,7 @@
  - responses accept links
  - add self link in response
  - update auto-tag-script
+ - responses accept more links
 
 # Version 1.1
 
