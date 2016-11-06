@@ -65,6 +65,10 @@ class ResponseFactory
 
         $actionResponse = $this->controller->$method();
         if ($actionResponse instanceof Response) {
+            if ($actionResponse->isError()) {
+                header("HTTP/1.0 404 Not Found"); die;
+            }
+
             $response = $actionResponse->withLink('self', $router->getFullUrl());
             return $response;
         }

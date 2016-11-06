@@ -2,13 +2,18 @@
 
 namespace Sensorario\WheelFramework\Responses;
 
-class ResponseError
+class ResponseError implements Response
 {
     private $json;
 
     private function __construct(array $params)
     {
         $this->json = $params;
+    }
+
+    public function isError()
+    {
+        return true;
     }
 
     public static function withHttpStatusCode($statusCode) {
