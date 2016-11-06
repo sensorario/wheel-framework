@@ -11,6 +11,12 @@ class ResponseError
         $this->json = $params;
     }
 
+    public static function withHttpStatusCode($statusCode) {
+        return new self([
+            'statusCode' => $statusCode,
+        ]);
+    }
+
     public static function fromException(\Exception $e)
     {
         return new self([

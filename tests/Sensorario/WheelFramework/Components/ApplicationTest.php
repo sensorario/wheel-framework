@@ -127,4 +127,9 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
             $return
         );
     }
+
+    public function testInvaldUriReturn404()
+    {
+        $this->markTestIncomplete();
+    }
 }
