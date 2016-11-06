@@ -1,4 +1,4 @@
-# Version 1.3
+# Version 1.2
 
  - return 404 http status code when resource not exists 
  - add auto-tag script
